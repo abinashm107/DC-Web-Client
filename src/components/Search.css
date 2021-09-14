@@ -3,7 +3,6 @@
 }
 .searchcontrol {
   width: 21%;
-
 }
 .movielist {
   width: 6%;
@@ -80,7 +79,7 @@ label {
 input {
   width: 92%;
   font-size: larger;
-  border: 1px solid #FF6A00;
+  border: 1px solid #ff6a00;
   height: 48px;
   border-radius: 5px;
   padding-left: 10px;
@@ -89,7 +88,7 @@ input {
 
 input:focus {
   outline: none;
-  border: 2px solid #FF6A00;
+  border: 2px solid #ff6a00;
 }
 
 .cardlang {
@@ -104,7 +103,7 @@ input:focus {
 
 select:focus {
   outline: none;
-  border: 2px solid #FF6A00;
+  border: 2px solid #ff6a00;
 }
 
 button {
@@ -113,12 +112,9 @@ button {
   width: 92%;
   font-size: larger;
   border: none;
-  background-color: #FF6A00;
+  background-color: #ff6a00;
   height: 48px;
   color: white;
   border-radius: 5px;
   padding-left: 10px;
 }
-
-
-

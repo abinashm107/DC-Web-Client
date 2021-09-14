@@ -8,7 +8,7 @@ const BookingPage = () => {
   const [error, setError] = useState(null);
   let { mov_id } = useParams();
   useEffect(() => {
-    const url = "https://localhost:44326/movies/" + mov_id;
+    const url = "https://localhost:44326/movie/" + mov_id;
     console.log(url);
 
     fetch(url)

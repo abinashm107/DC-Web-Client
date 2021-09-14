@@ -7,6 +7,9 @@ const Search = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
   const [itemsMaster, setItemsMaster] = useState([]);
+  const [applyFilterText, setApplyFilterText] = useState("Apply Filters");
+  const [filterBool, setFilterBool] = useState(false);
+
   const [upcoming, setUpcoming] = useState([]);
   const [upcomingMaster, setUpcomingMaster] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -70,74 +73,73 @@ const Search = () => {
     }
   };
 
-  const handleLangChange = (val) => {
-    setFilterLanguage(val);
-
-    setItems(itemsMaster);
-    setUpcoming(upcomingMaster);
-    setSearch(searchMaster);
-    console.log(val);
-    if (val !== "All") {
-      console.log("reached here");
-      setSearch(
-        search.filter(function (el) {
-          return el.language.toUpperCase() === val.toUpperCase();
-        })
-      );
-
-      setItems(
-        items.filter(function (el) {
-          return el.language.toUpperCase() === val.toUpperCase();
-        })
-      );
-
-      setUpcoming(
-        upcoming.filter(function (el) {
-          return el.language.toUpperCase() === val.toUpperCase();
-        })
-      );
-    }
-  };
-
-  // const setDefaultArray = (e) => {
-  //   setItems(itemsMaster);
-  //   setUpcoming(upcomingMaster);
-  //   setSearch(searchMaster);
-  // };
-
-  const handleLocChange = (val) => {
-    setFilterLocation(val);
-
-    setItems(itemsMaster);
-    setUpcoming(upcomingMaster);
-    setSearch(searchMaster);
-
-    if (val !== "All") {
-      setSearch(
-        search.filter(function (el) {
-          return el.location.toUpperCase() === val.toUpperCase();
-        })
-      );
-
-      setItems(
-        items.filter(function (el) {
-          return el.location.toUpperCase() === val.toUpperCase();
-        })
-      );
-
-      setUpcoming(
-        upcoming.filter(function (el) {
-          return el.location.toUpperCase() === val.toUpperCase();
-        })
-      );
-    }
-  };
-
   const handleSortChange = (val) => {
     setSortBy(val);
     setSearch(search.sort((a, b) => (a.val > b.val ? 1 : -1)));
     setItems(items.sort((a, b) => (a.val > b.val ? 1 : -1)));
     setUpcoming(upcoming.sort((a, b) => (a.val > b.val ? 1 : -1)));
+  };
+
+  const applyFilterFunction = (e) => {
+    e.preventDefault();
+    if (filterBool) {
+      setItems(itemsMaster);
+      setUpcoming(upcomingMaster);
+      setSearch(searchMaster);
+    } else if (filterLanguage === "All" && filterLocation === "All") {
+      setItems(itemsMaster);
+      setUpcoming(upcomingMaster);
+      setSearch(searchMaster);
+    } else {
+      setItems(itemsMaster);
+      setUpcoming(upcomingMaster);
+      setSearch(searchMaster);
+      setSearch(
+        search.filter(function (el) {
+          if (filterLanguage !== "All" && filterLocation === "All") {
+            return el.language.toUpperCase() == filterLanguage.toUpperCase();
+          } else if (filterLocation !== "All" && filterLanguage === "All") {
+            return el.location.toUpperCase() == filterLocation.toUpperCase();
+          } else {
+            return (
+              el.language.toUpperCase() == filterLanguage.toUpperCase() &&
+              el.location.toUpperCase() == filterLocation.toUpperCase()
+            );
+          }
+        })
+      );
+
+      setItems(
+        items.filter(function (el) {
+          if (filterLanguage !== "All" && filterLocation === "All") {
+            return el.language.toUpperCase() == filterLanguage.toUpperCase();
+          } else if (filterLocation !== "All" && filterLanguage === "All") {
+            return el.location.toUpperCase() == filterLocation.toUpperCase();
+          } else {
+            return (
+              el.language.toUpperCase() == filterLanguage.toUpperCase() &&
+              el.location.toUpperCase() == filterLocation.toUpperCase()
+            );
+          }
+        })
+      );
+
+      setUpcoming(
+        upcoming.filter(function (el) {
+          if (filterLanguage !== "All" && filterLocation === "All") {
+            return el.language.toUpperCase() == filterLanguage.toUpperCase();
+          } else if (filterLocation !== "All" && filterLanguage === "All") {
+            return el.location.toUpperCase() == filterLocation.toUpperCase();
+          } else {
+            return (
+              el.language.toUpperCase() == filterLanguage.toUpperCase() &&
+              el.location.toUpperCase() == filterLocation.toUpperCase()
+            );
+          }
+        })
+      );
+    }
+    setFilterBool(!filterBool);
   };
 
   return (
@@ -172,7 +174,8 @@ const Search = () => {
             <select
               name="location"
               value={filterLocation}
-              onChange={(e) => handleLocChange(e.target.value)}
+              onBlur={() => setFilterBool(false)}
+              onChange={(e) => setFilterLocation(e.target.value)}
               id="location"
             >
               <option value="All">All</option>
@@ -187,13 +190,43 @@ const Search = () => {
               name="language"
               id="language"
               value={filterLanguage}
-              onChange={(e) => handleLangChange(e.target.value)}
+              onBlur={() => setFilterBool(false)}
+              onChange={(e) => setFilterLanguage(e.target.value)}
             >
               <option value="All">All</option>
               <option value="English">English</option>
               <option value="Hindi">Hindi</option>
             </select>
+
+            {!filterBool && (
+              <button
+                style={{
+                  marginRight: "-1px",
+                  backgroundColor: "#FF6A00",
+                  color: "#fff",
+                }}
+                onClick={(e) => applyFilterFunction(e)}
+                type="button"
+              >
+                Apply Filter
+              </button>
+            )}
+            {filterBool && (
+              <button
+                style={{
+                  marginRight: "-1px",
+                  backgroundColor: "#fff",
+                  border: "2px dotted #FF6A00",
+                  color: "#FF6A00",
+                }}
+                onClick={(e) => applyFilterFunction(e)}
+                type="button"
+              >
+                Disable Filters
+              </button>
+            )}
           </form>
+
           <br />
           <form onSubmit={(e) => e.preventDefault()} className="searchform">
             <h3 htmlFor="">Sort </h3>
